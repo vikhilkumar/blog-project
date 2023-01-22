@@ -1,0 +1,30 @@
+<!DOCTYPE>
+{%extends 'blog_app/base.html' %}
+{%block title_block%}VIKHIL's BLOG HOME PAGE{%endblock%}
+{%block content%}
+    <h1>VIKHIL's BLOG</h1>
+    {%if tag%}
+        <h2>Posts tagged with '{{tag.name}}'</h2>
+    {%endif%}
+    {%for post in post_list%}
+        {% comment %} <h2><a href='{{post.get_absolute_url}}'>{{post.title}}</a></h2> {% endcomment %}
+        <h2><a href='/details/{{post.id}}'>{{post.title}}</a></h2>
+        <p id='date'>Published on {{post.publish}} by {{post.author|title}}</p>
+        <p>Tags: 
+            {% for tag in post.tags.all%}
+               <a href="{%url 'post_list_by_tag_name' tag.slug%}" class='btn-success'> {{tag.name}}</a>
+               {%if not forloop.last%},{%endif%}
+            {%endfor%}
+                     {% comment %} {%url 'post_list_by_tag_name' tag.slug} - this reverse url building concept ,using conical name='post_list_by_tag_name' defined in urls.py . Build url where the argument is slug {% endcomment %}
+        </p>
+
+        {{post.body|truncatewords:30|linebreaks}}
+        {% comment %} truncatewords:30 - from body field it will take only 30 words from n number of words considering linebreaks {% endcomment %}
+    {% endfor %}
+    {% comment %}here we are including Pagination.html file {% endcomment %}
+    {% include 'blog_app/pagination.html' with page=post_list %}
+
+    {% comment %} If we are using the pagination with Class based with views the we use page=page_obj {% endcomment %}
+    {% comment %} {% include 'blog_app/pagination.html' with page=page_obj %} {% endcomment %}
+
+{%endblock%}

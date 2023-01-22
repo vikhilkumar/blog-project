@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+{%load staticfiles%}
+{%load blogs_tags%}
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title>{%block title_block%}{%endblock%}</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <link rel='stylesheet' href="{% static "css/blog.css" %}">
+    </head>
+<body>
+    <div class='content'>
+        {% block  content%}        
+        {% endblock  %}
+    </div>
+    <div class='sidebar'>
+        <h2>VIKHIL's Blog</h2>
+        <p>The total number of published posts upto today:<span class='pcount'>{%total_posts%}</span></p>
+        <h3>Latest Posts:</h3>{%show_latest_posts%}
+        <h3>Most Commented Posts:</h3>
+        {%get_most_commented_post as most_commented_posts%}
+        <ul>
+            {%for post in most_commented_posts%}
+                <li><a href='/details/{{post.id}}'>{{post.title}}</a></li>
+            {%endfor%}
+        </ul>
+    </div>
+</body>
+</html> 
